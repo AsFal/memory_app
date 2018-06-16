@@ -1,0 +1,16 @@
+<% include partials/header %>
+
+<div class="ui container">
+    <% deck.forEach(function(card){%>
+      <div class="card" style="border:5px solid black;">
+          <div class="front">
+            <p><%=card.question%></p>
+          </div>
+          <div class="back">
+            <p><%=card.answer%></p>
+          </div>
+      </div>
+    <%});%>
+</div>
+
+<% include partials/footer %>

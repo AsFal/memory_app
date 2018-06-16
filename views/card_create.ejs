@@ -1,0 +1,16 @@
+<% include partials/header %>
+<div class="ui container">
+  <form class="ui form" action="/categories/<%=category._id%>/cards" method="post">
+    <div class="field">
+          <label for="">Question</label>
+          <textarea name="card[question]" rows="8" cols="80"></textarea>
+    </div>
+    <hr>
+    <div class="field">
+      <label for="">Answer</label>
+      <textarea name="card[answer]" rows="8" cols="80"></textarea>
+    </div>
+    <button class="ui button" type="submit" name="button">Create!</button>
+  </form>
+</div>
+<% include partials/footer %>

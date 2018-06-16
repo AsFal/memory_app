@@ -1,0 +1,17 @@
+<% include partials/header %>
+
+  <div class="ui center aligned container login" id="login">
+    <h1>Login</h1>
+    <form class="ui form" action="/login" method="post">
+      <div class="field" >
+          <input type="text" name="username" value="" placeholder="username">
+      </div>
+      <div class="field">
+        <input type="password" name="password" value="" placeholder="password">
+      </div>
+      <button class="ui button" type="submit" name="button">Login</button>
+    </form>
+      <a class="ui button" href="/register">Create Account</a>
+  </div>
+
+<% include partials/footer %>

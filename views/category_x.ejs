@@ -1,0 +1,9 @@
+<% include partials/header %>
+
+  <!-- Perhaps not necessary considering the edit page fulfills the same role-->
+  <h4><%=category.title%></h4>
+  <img src="<%=category.image%>" style="width:100%; height:100%;">
+  <a href="categories/<%=category.title%>/edit">Edit</a>
+  <a href="categories/<%=category.title%>/card/new"></a>
+  <a href="categories/<%=category.title%>/play">Play</a>
+<% include partials/footer %>

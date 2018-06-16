@@ -1,0 +1,46 @@
+<% include partials/header %>
+
+<div class="container">
+  <form class="" action="/categories/<%=category._id%>?_method=PUT" method="post">
+    <div class="">
+      Title
+      <input type="text" name="category[title]" value="<%=category.title%>">
+    </div>
+    <div class="">
+      Description
+      <textarea name="category[description]" rows="8" cols="80">
+        <%=category.description%>
+      </textarea>
+    </div>
+    <div class="">
+      Image
+      <input type="text" name="category[image]" value="<%=category.image%>">
+    </div>
+      <button type="submit">Modify!</button>
+  </form>
+  <a href="/categories" class="ui button">Return</a>
+
+  <% category.cards.forEach(function(card){%>
+    <div class="">
+      Question: <%=card.question%>
+    </div>
+    <hr>
+    <div class="">
+      Answer: <%=card.answer%>
+    </div>
+    <a href="/categories/<%=category._id%>/cards/<%=card._id%>/edit">Edit!</a>
+    <form class="" action="/categories/<%=category._id%>/cards/<%=card._id%>?_method=DELETE" method="post">
+      <button class="ui button" type="submit" name="button">Delete!</button>
+    </form>
+    <!-- <a href="/categories/<%=category.title%>/"></a>
+    <form class="" action="index.html" method="post">
+
+    </form> -->
+  <%});%>
+
+  <a class="ui button" href="/categories/<%=category._id%>/cards/new">New Card</a>
+
+</div>
+
+
+<% include partials/footer %>
