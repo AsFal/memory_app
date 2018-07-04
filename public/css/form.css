@@ -1,0 +1,110 @@
+
+
+.ui.grid {
+  height:100%;
+  width:100%;
+}
+.three.column.centered.row {
+  height: 50%;
+  padding: 1% auto;
+}
+
+.two.column.row {
+  height: 21%;
+  padding: 1% auto;
+}
+
+.column.left {
+  border-right:1px solid black
+}
+
+.column.right {
+  border-left:1px solid black
+}
+
+#box{
+  height:100%;
+  border: 2px solid black;
+  border-radius: 18px;
+}
+
+
+
+/* This is footer css and should be put on its own stylesheet */
+/* ======================================== */
+.ui.bottom.fixed.borderless.menu {
+  border-top:1px solid black;
+  color:black;
+}
+
+.item {
+  margin: 0px auto;
+}
+/* ====================================== */
+
+
+
+.box.item {
+  display:block;
+  float:none;
+  width: 50%;
+  margin: 2% auto;
+  text-align: center;
+
+}
+
+
+
+
+/* .container {
+    display: table;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+} */
+/* .helper {
+    #position: absolute;
+    #top: 50%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.content {
+    #position: relative;
+    #top: -50%;
+    margin: 0 auto;
+    width: 200px;
+    border: 1px solid orange;
+} */
+
+
+/* .centeredBox{
+  position: absolute;
+  top:50%;
+  left:50%;
+  height: 30%;
+  width:50%;
+  margin: -15% 0 0 -25%;
+} */
+.ui .form .field {
+  width:80%;
+  margin-left: 10%;
+  margin-right:10%;
+  color:black;
+  border-color:black;
+
+}
+
+.ui .button {
+  margin-bottom:14px;
+  /* float:left; */
+}
+
+
+
+
+html, body {
+  height:100%;
+  overflow-y:hidden;
+  /* font-family: 'Russo One', sans-serif; */
+}

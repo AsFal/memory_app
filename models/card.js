@@ -5,7 +5,6 @@ var cardSchema = new mongoose.Schema({
   answer:String,
   timeStamp:Number,
   consecutiveRightAnswers:Number
-
 });
 
 var Card = mongoose.model("Card", cardSchema)

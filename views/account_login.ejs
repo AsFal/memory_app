@@ -1,17 +1,40 @@
-<% include partials/header %>
+<% include partials/header_form %>
 
-  <div class="ui center aligned container login" id="login">
-    <h1>Login</h1>
-    <form class="ui form" action="/login" method="post">
-      <div class="field" >
-          <input type="text" name="username" value="" placeholder="username">
-      </div>
-      <div class="field">
-        <input type="password" name="password" value="" placeholder="password">
-      </div>
-      <button class="ui button" type="submit" name="button">Login</button>
-    </form>
-      <a class="ui button" href="/register">Create Account</a>
+
+
+
+<div class="ui grid">
+  <div class="two column row">
+    <div class="column left"></div>
+    <div class="column right"></div>
   </div>
+  <div class="three column centered row">
+    <div class="column" id="box">
+      <!-- <div class="box item"> -->
+        <h1 class="box item">Login</h1>
+      <!-- </div> -->
+      <form class="ui form" action="/login" method="post">
+        <div class="field" >
+            <input type="text" name="username" value="" placeholder="username">
+        </div>
+        <div class="field">
+          <input type="password" name="password" value="" placeholder="password">
+        </div>
+        <!-- <div class="box item"> -->
+          <button class="ui button box item" type="submit" name="button">Login</button>
+        <!-- </div> -->
+      </form>
+      <!-- <div class="box item"> -->
+        <a class="ui button box item" href="/register">Create Account</a>
+      <!-- </div> -->
+    </div>
+  </div>
+  <div class="two column row">
+    <div class="column left"></div>
+    <div class="column right"></div>
+  </div>
+</div>
+
+
 
 <% include partials/footer %>

@@ -3,6 +3,7 @@ var express   = require("express"),
     Category  = require("../models/category.js"),
     User      = require("../models/user.js"),
     Client    = require("../models/client.js"),
+    Card     = require("../models/card.js"),
     time      = require("../middleware/time.js");
 
 
@@ -160,6 +161,7 @@ router.put("/:id", function(req,res){
 // delete request that deletes the category with specific id
 router.delete("/:id", function(req,res){
 
+  // TODO: This method needs to delete all of the associated cards
 
   Client.findOne({user:req.user._id}, function(err, client){
 
@@ -188,6 +190,9 @@ router.delete("/:id", function(req,res){
 });
 
 
+
+
+
 // this get request brings the user to the present day's stack of queue cards
 router.get("/:id/play", function(req,res){
   Category.findById(req.params.id).populate("cards").exec(function(err, category){
@@ -200,10 +205,48 @@ router.get("/:id/play", function(req,res){
       //For some reason module does not export the functions called in the sent
       // functions, so I have to find a way to export them as well
 
-      res.render("play", {deck:deck});
+      res.render("play", {deck:deck, category: category});
     }
   })
 
 });
+
+router.post("/:id/play", function(req,res){
+
+
+
+  var deck = [];
+  // Check if the deck information is passed in the post request (or a way to do so)
+  Category.findById(req.params.id).populate("cards").exec(function(err,category){
+    if (err) {
+      console.log(err)
+    }
+    else {
+      time.addCardsToDeck(deck, category);
+
+      for (var i = 0; i < deck.length; i++) {
+
+        // boolean variable that indicates if the card was correctly answered
+        // or not
+        var isCorrect = req.body.correct[deck[i]._id] == "off,on";
+        console.log("Answer is Correct: " +  String(isCorrect));
+        console.log(deck[i]);
+        var update = time.reclassifyCard(deck[i], isCorrect);
+        console.log(update);
+        Card.findByIdAndUpdate(deck[i]._id, update, function(err, card){
+          if(err){
+            console.log(err)
+          }
+          else {
+            console.log(card);
+
+          }
+        })
+      }
+    }
+  })
+
+  res.redirect("/categories");
+})
 
 module.exports =router;

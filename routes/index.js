@@ -10,7 +10,6 @@ var express = require("express"),
 
 //This will eventually be a landing page
 router.get("/", function(req,res){
-  console.log("root");
   res.redirect("/login");
 });
 

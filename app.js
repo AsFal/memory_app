@@ -42,15 +42,9 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/",indexRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/categories/:id/cards", cardRoutes);
-// This needs to be a method on the CategorySchema (TODO add this in later)
-// function applyDefaultImage(image_url)
-// {
-//     if (!image_url) {
-//
-//     }
-// }
 
-seed.seed_AsFal();
+
+// seed.seed_AsFal();
 
 app.listen(3000, function(){
   console.log("The server is a lie!");

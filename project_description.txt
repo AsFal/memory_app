@@ -21,6 +21,22 @@ TODO:
 
 
 TODO:
+-Make  front-end password verification function as a js script
+-
+
+TODO:
+-Category goes to trash before it completely goes away (or some kind of pop-up
+verification)
+
+
+TODO:
+The cards are not sorted correctly
+
+TODO:
+The card edit function is broken for some reason
+
+
+TODO:
 --make General seed function
 
 

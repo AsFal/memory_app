@@ -1,16 +1,35 @@
-<% include partials/header %>
-<div class="ui container">
-  <form class="ui form" action="/categories/<%=category._id%>/cards" method="post">
-    <div class="field">
-          <label for="">Question</label>
-          <textarea name="card[question]" rows="8" cols="80"></textarea>
+<% include partials/header_form %>
+
+
+
+<div class="ui grid">
+  <div class="two column row" style="height:16%;">
+    <div class="column left"></div>
+    <div class="column right"></div>
+  </div>
+  <div class="three column centered row" style="height:60%;">
+    <div class="column" id="box">
+      <form class="ui form" action="/categories/<%=category._id%>/cards" method="post">
+        <div class="field">
+              <label for="">Question</label>
+              <textarea name="card[question]" rows="8" cols="80"></textarea>
+        </div>
+        <hr>
+        <div class="field">
+          <label for="">Answer</label>
+          <textarea name="card[answer]" rows="8" cols="80"></textarea>
+        </div>
+        <button class="ui button box item" type="submit" name="button">Create!</button>
+      </form>
     </div>
-    <hr>
-    <div class="field">
-      <label for="">Answer</label>
-      <textarea name="card[answer]" rows="8" cols="80"></textarea>
-    </div>
-    <button class="ui button" type="submit" name="button">Create!</button>
-  </form>
+  </div>
+  <div class="two column row" style="height:16%;">
+    <div class="column left"></div>
+    <div class="column right"></div>
+  </div>
+
 </div>
+
+
+
 <% include partials/footer %>

@@ -47,7 +47,7 @@ function randomizeDeck(deck){
 //The category here follows the same model found in model/category.js
 function addCardsToDeck(deck, category) {
   var day  = getDay();
-  console.log("Day is" + String(day));
+  // console.log("Day is " + String(day));
   category.cards.forEach(function(card){
     //The timeStamp on the card represents the day on which the card shouldve
     // been seen. If the timeStamp is smaller than the current day, then the day
@@ -69,38 +69,41 @@ function addCardsToDeck(deck, category) {
 
 //Cards will also carry information about the number of consecutive wrong answers
 function reclassifyCard(card, rightAnswer) {
+  var currentDay = getDay();
+  var update = {timeStamp:0,
+              consecutiveRightAnswers:0
+            };
+
   if (rightAnswer) {
     switch(card.consecutiveRightAnswers) {
       case 0:
-        card.timeStamp += 3;
-        card.consecutiveRightAnswers++;
+        update.timeStamp = currentDay + 3;
         break;
       case 1:
-        card.timeStamp += 7;
-        card.consecutiveRightAnswers++;
+        update.timeStamp = currentDay + 7;
         break;
       case 2:
-        card.timeStamp +=14;
-        card.consecutiveRightAnswers++;
+        update.timeStamp = currentDay + 14;
         break;
       case 3:
-        card.timeStamp +=30;
-        card.consecutiveRightAnswers++;
+        update.timeStamp = currentDay + 30;
         break;
       default:
-        card.timeStamp +=60;
-        card.consecutiveRightAnswers++;
+        update.timeStamp = currentDay + 60;
     }
+    update.consecutiveRightAnswers = card.consecutiveRightAnswers + 1;
   }
   else {
-    carte.timeStamp +=1;
-    card.consecutiveRightAnswers = 0;
+    update.timeStamp = currentDay + 1;
+    update.consecutiveRightAnswers = 0;
   }
+  return update;
 }
 
 
 module.exports={
   addCardsToDeck:addCardsToDeck,
+  getDay:getDay,
   // getDay:getDay,
   // randomizeDeck:randomizeDeck,
   reclassifyCard:reclassifyCard

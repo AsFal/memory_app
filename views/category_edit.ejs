@@ -1,46 +1,75 @@
 <% include partials/header %>
-
-<div class="container">
-  <form class="" action="/categories/<%=category._id%>?_method=PUT" method="post">
-    <div class="">
-      Title
-      <input type="text" name="category[title]" value="<%=category.title%>">
+<form class="ui form" action="/categories/<%=category._id%>?_method=PUT" method="post">
+  <div class="field" style="font-size:45px;">
+    <input type="text" name="category[title]" value="<%=category.title%>" style=" height:200%;">
+  </div>
+  <div class="ui grid">
+    <div class="two column row">
+      <div class="column">
+        <div class="field">
+          <label for="">Description</label>
+        </div>
+        <div class="field">
+          <textarea name="category[description]" rows="4"><%=category.description%></textarea>
+        </div>
+        <div class="field">
+          <label for="">Image Source</label>
+          <input type="text" name="category[image]" value="<%=category.image%>">
+        </div>
+        <button class="ui button" type="submit" name="button">Modify!</button>
+      </div>
+      <div class="column">
+        <div class="ui fluid card">
+          <div class="image">
+            <img src="<%=category.image%>" alt="">
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="">
-      Description
-      <textarea name="category[description]" rows="8" cols="80">
-        <%=category.description%>
-      </textarea>
-    </div>
-    <div class="">
-      Image
-      <input type="text" name="category[image]" value="<%=category.image%>">
-    </div>
-      <button type="submit">Modify!</button>
-  </form>
-  <a href="/categories" class="ui button">Return</a>
-
+  </div>
+  <hr>
+</form>
+<div class="ui four cards" style="margin-bottom:50px;">
   <% category.cards.forEach(function(card){%>
-    <div class="">
-      Question: <%=card.question%>
+    <div class="red card">
+      <div class="content">
+        <div class="description">
+          <p>
+              Question: <%=card.question%>
+          </p>
+        </div>
+        <hr>
+        <div class="desciption">
+          <p>
+              Answer: <%=card.answer%>
+          </p>
+        </div>
+      </div>
+      <div class="extra content">
+        <div class="ui two buttons">
+          <div class="ui button">
+            <a href="/categories/<%=category._id%>/cards/<%=card._id%>/edit">Edit!</a>
+          </div>
+          <div class="ui button">
+            <form class="" action="/categories/<%=category._id%>/cards/<%=card._id%>?_method=DELETE" method="post">
+              <button class="ui button" type="submit" name="button">Delete!</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <hr>
-    <div class="">
-      Answer: <%=card.answer%>
-    </div>
-    <a href="/categories/<%=category._id%>/cards/<%=card._id%>/edit">Edit!</a>
-    <form class="" action="/categories/<%=category._id%>/cards/<%=card._id%>?_method=DELETE" method="post">
-      <button class="ui button" type="submit" name="button">Delete!</button>
-    </form>
-    <!-- <a href="/categories/<%=category.title%>/"></a>
-    <form class="" action="index.html" method="post">
-
-    </form> -->
   <%});%>
+  <div class="red card">
+    <div class="content">
+      <a href="/categories/<%=category._id%>/cards/new">New card</a>
 
-  <a class="ui button" href="/categories/<%=category._id%>/cards/new">New Card</a>
+    </div>
 
+  </div>
 </div>
+
+
+
 
 
 <% include partials/footer %>

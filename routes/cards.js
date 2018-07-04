@@ -2,7 +2,8 @@ var express = require("express"),
     router = express.Router({mergeParams:true});
 
 var Category = require("../models/category.js"),
-    Card     = require("../models/card.js");
+    Card     = require("../models/card.js"),
+    time     = require("../middleware/time.js");
 
 //Card creation route
 router.get("/new", function(req,res){
@@ -21,7 +22,10 @@ router.post("/", function(req,res){
       console.log(err);
     }
     else {
-      Card.create(req.body.card, function(err,card){
+      var card = req.body.card;
+      card.timeStamp = time.getDay();
+      card.consecutiveRightAnswers = 0;
+      Card.create(card, function(err,card){
             if (err) {
               console.log(err);
             }

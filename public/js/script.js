@@ -14,24 +14,25 @@
 // the card (may have to play with the default ejs)
 
 // SO that all the cards start in the base front mode
-$(".card").flip();
+$(".flip").flip();
 
 var currentCard = 1;
 
-var cards = $(".card");
+var cards = $(".flip");
 
 for (var i = 1; i < cards.length; i++) {
   cards[i].style.display = "none";
 }
 //
-$(".container").on("click", ".card", function(){
+$(".container").on("click", ".flip", function(){
   //If the front is showing
   if ($(this).find(".front").css("z-index") == "1"){
     $(this).flip();
   }
   // If the back is showing (i.e. the answer of the question)
   else{
-    $(this).css("display", "none");
+    $(this).transition('fly down');
+    // css("display", "none")
     currentCard++;
     card =$(".container").children("div:nth-of-type("+String(currentCard)+")").css("display", "block");
     // for (var i = 0; i < cards.length; i++) {

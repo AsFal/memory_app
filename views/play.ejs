@@ -1,16 +1,37 @@
-<% include partials/header %>
+<% include partials/header_cards %>
 
-<div class="ui container">
-    <% deck.forEach(function(card){%>
-      <div class="card" style="border:5px solid black;">
+<!-- <div class="ui two column centered grid">-->
+  <form class="" action="/categories/<%=category._id%>/play" method="post">
+    <div class="ui container">
+      <% deck.forEach(function(card){%>
+        <div class="flip">
           <div class="front">
             <p><%=card.question%></p>
           </div>
           <div class="back">
             <p><%=card.answer%></p>
-          </div>
-      </div>
-    <%});%>
-</div>
+            <!-- The correct checkbox will be used to reclassify the Cards in the
+            post request. The hidden input bearing the same name is used to
+            give the checkbox a default value of "off" so that the server does
+            not throw an error for trying to read an unexisting value. -->
 
+            Correct
+            <input type="hidden" name="correct[<%=card._id%>]" value="off">
+            <input type="checkbox" name="correct[<%=card._id%>]" value="on">
+
+
+            <!-- The incorret checkbox is only present for aesthetic and as a
+            for front end card cycling. -->
+            Incorrect
+            <input type="checkbox">
+          </div>
+        </div>
+      <%});%>
+        <div class="flip">
+          <div class="front">
+            <button class="ui buton" id="finish" type="submit" name="button">Finish for Today</button>
+          </div>
+        </div>
+      </div>
+    </form>
 <% include partials/footer %>

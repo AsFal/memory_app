@@ -1,0 +1,58 @@
+.ui.container {
+  height:100%;
+  width:100%;
+  border: 1px solid rgba(144, 21, 145, 0);
+}
+
+
+.flip {
+    height: 20%;
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top:20%;
+
+    border: 1px solid rgba(144, 21, 145, 0);
+
+}
+ body {
+   /* overflow-y: hidden; */
+   /* border: 1px solid rgba(144, 21, 145, 0); */
+ }
+
+form {
+  height:100%;
+  /* border: 1px solid rgba(144, 21, 145, 0); */
+}
+
+.front, .back {
+  border: 2px solid black;
+  border-radius: 18px;
+}
+
+.front {
+    width: 300px;
+    height: auto;
+}
+
+.back {
+    background: #2184cd;
+    color: #fff;
+    text-align: center;
+}
+
+.link.slot {
+  height:10%;
+  margin:45% auto;
+  font-size: 22px;
+}
+
+
+#finish {
+  background-color: white;
+  height:10%;
+  width: auto;
+  border: none;
+  margin:15% auto;
+  font-size: 22px;
+}
