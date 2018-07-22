@@ -10,20 +10,22 @@
           </div>
           <div class="back">
             <p><%=card.answer%></p>
+
             <!-- The correct checkbox will be used to reclassify the Cards in the
             post request. The hidden input bearing the same name is used to
             give the checkbox a default value of "off" so that the server does
             not throw an error for trying to read an unexisting value. -->
-
-            Correct
             <input type="hidden" name="correct[<%=card._id%>]" value="off">
-            <input type="checkbox" name="correct[<%=card._id%>]" value="on">
-
+            <!-- Putting the checkbox in a label allows us to activate the checbox by
+            clicking the label -->
+            <label><input type="checkbox" name="correct[<%=card._id%>]" value="on">Correct</label>
 
             <!-- The incorret checkbox is only present for aesthetic and as a
             for front end card cycling. -->
-            Incorrect
-            <input type="checkbox">
+            <label><input type="checkbox">Incorrect</label>
+
+
+
           </div>
         </div>
       <%});%>
@@ -31,6 +33,9 @@
           <div class="front">
             <button class="ui buton" id="finish" type="submit" name="button">Finish for Today</button>
           </div>
+          <!-- <div class="back">
+
+          </div> -->
         </div>
       </div>
     </form>

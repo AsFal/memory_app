@@ -1,3 +1,7 @@
+:root {
+  --back-color:#2184cd;
+}
+
 .ui.container {
   height:100%;
   width:100%;
@@ -36,7 +40,7 @@ form {
 }
 
 .back {
-    background: #2184cd;
+    background: var(--back-color, red);
     color: #fff;
     text-align: center;
 }
@@ -56,3 +60,28 @@ form {
   margin:15% auto;
   font-size: 22px;
 }
+
+/*  Modified Checboxes*/
+label{
+  display:inline-block;
+  cursor:pointer;
+  background-color: var(--back-color);
+  border-radius:10px;
+  color:white;
+  padding:1%;
+  border: 1px solid white;
+
+}
+
+label:hover {
+  background-color: gray;
+}
+
+label input[type="checkbox"] {
+  display:none;
+}
+
+label input[type="checkbox"] + .label-text:before {
+}
+
+/* cursor pointer */

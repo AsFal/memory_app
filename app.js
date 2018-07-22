@@ -1,3 +1,8 @@
+// @global
+var testing = true;
+var testFile = "pi.json";
+
+//Used packages
 var express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
@@ -7,20 +12,20 @@ var express         = require("express"),
     passportLocal   = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose");
 
-var Card            = require("./models/card.js"),
-    Category        = require("./models/category.js"),
-    User            = require("./models/user.js");
+// Used models
 
+var User            = require("./models/user.js");
+// Routes
 var cardRoutes      = require("./routes/cards.js");
 var categoryRoutes  = require("./routes/categories.js");
 var indexRoutes     = require("./routes/index.js");
-
-var seed = require("./seed.js");
+var playRoutes      = require("./routes/play.js");
 
 mongoose.connect("mongodb://localhost/memory_app");
 
 // Miscellaneous setup
 app.use(methodOverride('_method'));
+
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
@@ -41,10 +46,18 @@ passport.deserializeUser(User.deserializeUser());
 //Using the routes defined in the routes folder
 app.use("/",indexRoutes);
 app.use("/categories", categoryRoutes);
+app.use("/categories/:id/play", playRoutes);
 app.use("/categories/:id/cards", cardRoutes);
 
+if (testing){
+  var seed = require("./seed.js");
+  // var test = require("./test.js");
+  // seed.extractDataIntoJSON("testAccount", "test.json");
+  seed.eraseData("testAccount");
+  seed.seed("testAccount", testFile);
+  // test.runTests();
+}
 
-// seed.seed_AsFal();
 
 app.listen(3000, function(){
   console.log("The server is a lie!");

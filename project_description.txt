@@ -1,47 +1,50 @@
+Current feature being worked on
+TODO: Styling
+-Add color picking feature (where the user gets to pick amongst a number of
+colors for each of the categories)
 
-TODO: The basic architecture of the website (with the categories and such) is
-done, the few next things that need to be done are as follow
--Make a design for the login page
--https://vsco.co/user/login (explore this login page for information about the css)
--Signup page with the dual model
 
-  left box : signup information
-  right box : social media login (or something else if the social media Signup
-  buttons are on the bottom)
-TODO: do some actual design
-https://webflow.com/prototyping?utm_campaign=desktop&utm_medium=GoogleSearch&utm_source=(google-search)(use-case)(ui-tool)(other-geos)(beta)|web%20prototype--adid:hl1-desc1--lpid:prototyping&gclid=Cj0KCQjwu_jYBRD8ARIsAC3EGCJjlIZB5FvIWm-xqnHuJ_YT14FEZ9tKvjqY0p6Xc5D2lDXMbt_6UCIaAgVzEALw_wcB
-for prototyping a website
-https://www.creativebloq.com/web-design/top-10-prototyping-tools-2016-21619216
-
-TODO:
---Replace the time functions with a time API
---Research javascript time functions so I can connect
---Find a way to create the daily deck at midnight
---Put a review all button
 
 
 TODO:
--Make  front-end password verification function as a js script
--
-
-TODO:
--Category goes to trash before it completely goes away (or some kind of pop-up
-verification)
+-Add a password verification feature that prompts the user (without submitting
+the form) that the two passwords do not match
 
 
 TODO:
-The cards are not sorted correctly
+-Add a feature that prompts the user before deleting a category to make sure he
+wants to delete it
 
 TODO:
-The card edit function is broken for some reason
-
+-Fix the card randomizeDeck function in the time.js file in middleware folder
 
 TODO:
---make General seed function
+refactor CSS code
 
 
-TODO: connect to Github
--the node_modules must not go in the github
 
 TODO: write a code navigation paragraph (proper documentation)
 -Pull info from LOG1000 notes
+
+TODO:
+Add navigation buttons to navigate through the pages
+
+TODO: Add better error handling
+-Add 404 error page
+
+TODO:
+-Modify the play feature so only clicking the checkboxes changes the card
+
+TODO: make website more mobile friendly
+
+TODO: Add some kind of social aspect to it so users can share categories
+
+TODO:
+TESTING
+-Create a js function that copies all the categories and cards in a formatted
+txt file and a seed function that can read that txt file and generate data
+-Find a way to disable only the auth feature of the WebApp without affecting the
+rest
+
+
+TODO: Learn and apply wordpress to the website

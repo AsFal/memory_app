@@ -14,7 +14,10 @@
 // the card (may have to play with the default ejs)
 
 // SO that all the cards start in the base front mode
-$(".flip").flip();
+$(".flip").flip({
+  trigger: 'manual',
+  axis: 'x'
+});
 
 var currentCard = 1;
 
@@ -23,43 +26,37 @@ var cards = $(".flip");
 for (var i = 1; i < cards.length; i++) {
   cards[i].style.display = "none";
 }
-//
+
 $(".container").on("click", ".flip", function(){
-  //If the front is showing
-  if ($(this).find(".front").css("z-index") == "1"){
-    $(this).flip();
+  // This function handles the card animation for the play.ejs file. The
+  // different transition animatios must only fire when the checkbox is filled.
+  // the checkbox input is child of
+
+  //If the front is showing and the subit button is not on the card
+
+  if ( $(this).find(".front").css("z-index") == "1" && $(this).find("button").length == 0){
+    $(this).flip(true);
   }
-  // If the back is showing (i.e. the answer of the question)
-  else{
-    $(this).transition('fly down');
-    // css("display", "none")
-    currentCard++;
-    card =$(".container").children("div:nth-of-type("+String(currentCard)+")").css("display", "block");
-    // for (var i = 0; i < cards.length; i++) {
-    //   if (i == currentCard){
-    //     var card = card[i];
-    //     cards[i].style.display = "default";
-    //     currentCard++;
-    //   }
-    // }
-    // currentCard++;
-    // var value = $("div:nth-child("+String(currentCard)+")");
-    // $("ul:nth-child("+String(currentCard)+")").css("display","initial");
-    //Show next card using the z-index
+});
+// $(this).find(".front").css("z-index") == "1"
+
+
+$(".container").on("click", "input[type='checkbox']",
+function(){
+  var flip = $(this).parent().parent().parent();
+
+  // If the back of the card is showing
+  if(flip.find(".back").css("z-index") == "1"){
+    flip.transition('fly down');
+
+    // The Timeout function is used to wait the end of the animation before
+    // displaying the next card
+    setTimeout(function(){currentCard++;
+        nextCard =$(".container").children("div:nth-of-type("+String(currentCard)+")").css("display", "block");}
+        , 600);
   }
 
 });
 
 
-
-// TODO: Make it so only one card appears at the time (i.e. the cards must look
-// like a deck with one face up card)
-// First click reveals the answer, second click reveals the question
-
-
-
-
 //TODO: Double-click to skip the question (for whatever reason)
-
-// TODO: add card flip and card discard animations (ADVANCED, I HAVE 0 idea
-//how to do this

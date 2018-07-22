@@ -79,12 +79,13 @@ router.delete("/:card_id", function(req,res) {
       //This snipet of code deletes the card of the category array
       //TODO: turn this into a method once you learn about prototyping
       for (var i = 0; i < category.cards.length; i++) {
-        if (category.cards[i]==req.params.card_id){
+        if (category.cards[i].toString()===req.params.card_id.toString()){
           category.cards.splice(i,1);
           category.nb_cards--;
           break;
         }
       }
+      category.save();
 
 
       Card.findByIdAndDelete(req.params.card_id, function(err, card){

@@ -5,6 +5,7 @@ var categorySchema = new mongoose.Schema({
   title:String,
   description:String,
   image:String,
+  color:String,
   nb_cards: Number,
   cards:[
   {
