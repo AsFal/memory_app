@@ -1,4 +1,12 @@
-<% include partials/header_cards %>
+<% include partials/header %>
+
+
+<link rel="stylesheet" href="/css/cards.css">
+
+<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
+
+<script type="text/javascript" src=" /js/card_update.js"></script>
+
 
 <!-- <div class="ui two column centered grid">-->
   <form class="" action="/categories/<%=category._id%>/play" method="post">
@@ -15,14 +23,14 @@
             post request. The hidden input bearing the same name is used to
             give the checkbox a default value of "off" so that the server does
             not throw an error for trying to read an unexisting value. -->
-            <input type="hidden" name="correct[<%=card._id%>]" value="off">
+            <input type="hidden" name="<%=card._id%>" value="off">
             <!-- Putting the checkbox in a label allows us to activate the checbox by
             clicking the label -->
-            <label><input type="checkbox" name="correct[<%=card._id%>]" value="on">Correct</label>
+            <label><input type="checkbox" name="<%=card._id%>" value="correct">Correct</label>
 
             <!-- The incorret checkbox is only present for aesthetic and as a
             for front end card cycling. -->
-            <label><input type="checkbox">Incorrect</label>
+            <label><input type="checkbox" name="<%=card._id%>" value="incorrect">Incorrect</label>
 
 
 
@@ -31,7 +39,8 @@
       <%});%>
         <div class="flip">
           <div class="front">
-            <button class="ui buton" id="finish" type="submit" name="button">Finish for Today</button>
+            <a class="ui buton" href="/categories">Finish for Today</a>
+            <!-- <button class="ui buton" id="finish" type="submit" name="button">Finish for Today</button> -->
           </div>
           <!-- <div class="back">
 

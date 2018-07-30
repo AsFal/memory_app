@@ -1,5 +1,6 @@
 var mongoose  = require("mongoose"),
-    fs        = require("fs");
+    fs        = require("fs"),
+    _         = require('lodash');
 var Card            = require("./models/card.js"),
     Category        = require("./models/category.js"),
     User            = require("./models/user.js"),
@@ -15,44 +16,71 @@ var Card            = require("./models/card.js"),
 // files with node.js
 
 /**
- * Associates cards to their respective categories and converts the two
- * mongoose document arrays into a js object.
+ * This function takes a mongoose Document and converts into a Js object while
+ * also deleteing the id and version properties of the document.
  *
- *
- * @param {Mongoose Document Array} fetchedCategories
- *   An array of Mongoose documents that have been fetched from MongoDB. Every
- *   document represents a category model. (instance??)
- * @param {Mongoose Document Array} fetchedCards
- *  An array of Mongoose documents that have been fetched from MongoDB. Every
- *   document represents a card model. (instance??)
- * @return
- *  A Js object that has the cards associated to the proper category
+ * @param {Document} mongooseDocument
+ *   A mongoose document that will be transformed into a formatted js document.
  *
  */
-function generateObject(fetchedCategories, fetchedCards) {
-  var categoryList = [];
-  for (var i = 0; i < fetchedCategories.length; i++) {
-    // Here the mongoose document is converted to a Js object
-    // so we can use the delete operator
-    var category = fetchedCategories[i].toObject();
-    delete category._id;
-    delete category.__v;
-    var cardList = [];
-    fetchedCategories[i].cards.forEach(function(cardId){
-      for (var j = 0; j < fetchedCards.length; j++) {
-        if (fetchedCards[j]._id.toString() === cardId.toString()) {
-          var card = fetchedCards.slice(j, j+1)[0].toObject();
-          delete card._id;
-          delete card.__v;
-          cardList.push(card);
-        }
-      }
-    });
-      category.cards = cardList;
-      categoryList.push(category);
+function documentToFormattedObject(mongooseDocument) {
+  if (_.get(obj, 'constrcutor.base') instanceof mongoose.Mongoose  ){
+    var temp = mongooseDocument.toObject();
+    delete temp._id;
+    delete temp.__v;
+    return temp;
   }
-  return {categories:categoryList};
 }
+
+/**
+ * This function makes a number of async queries to MongoDB to generate lists
+ * of cards and categories. Once all of the callbacks have completed, the two
+ * lists are then converted into a JS object and exported to a JSON file
+ *
+ * @param {Array} highList
+ *   An array of mongoose documents that contain a property that is an array
+ *   of objects contained in lowList
+ * @param {Array} lowList
+ *   An array of mongoose documents that will be organized in the associated
+ *   porperty of the mongoose documents contained in highList
+ * @param {String} property
+ *   The name of the property in the highList documents that contain a list of
+ *  lowList document ids.
+ *
+ * @return
+ *   An array of js objects that
+ */
+function associateLevels(highList, lowList, property) {
+  var tempHighList = []
+  highList.forEach(function(highDocument) {
+    var highObject = documentToFormattedObject(highDocument);
+    delete highObject._id;
+    delete highObject.__v;
+    var associatedLowers = [];
+    highDocument[property].forEach(function(lowId) {
+      lowList.forEach(function(lowDocument){
+        if(lowDocument._id.toString() === lowId.toString()){
+          associatedLowers.push(documentToFormattedObject(lowDocument));
+        }
+      });
+    });
+    highObject[property] = associatedLowers;
+    tempHighList.push(highObject);
+  });
+  return tempHighList;
+}
+
+function pinchList(seperatedDocumentLists, propertyList) {
+  if (seperatedDocumentLists.length == 2) {
+    return associateLevels(seperatedDocumentLists[0], seperatedDocumentLists[1], propertyList[0]);
+  }
+  else {
+    var first = seperatedDocumentLists.shift();
+    var firstProperty = propertyList.shift();
+    return associateLevels(first, pinchList(seperatedDocumentLists, propertyList), firstProperty);
+  }
+}
+
 // NOTE: This function could be refactored into two seperate and more reusable
 // function
 // An association function that returns the higher level array (Categories) with
@@ -105,7 +133,8 @@ function extractDataIntoJSON(username, fileName) {
               // have been fetched before creating the JSON file
               if (categories.length === client.categories.length
                 && cards.length === categories[categories.length-1].cards.length) {
-                  var object = generateObject(categories,cards);
+                  // var object = generateObject(categories,cards);
+                  var object = {categories:pinchList([categories, cards], ["cards"])};
                   printObjectToJSON(object, fileName);
               }
             });

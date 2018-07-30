@@ -46,16 +46,18 @@ passport.deserializeUser(User.deserializeUser());
 //Using the routes defined in the routes folder
 app.use("/",indexRoutes);
 app.use("/categories", categoryRoutes);
-app.use("/categories/:id/play", playRoutes);
+app.use("/", playRoutes);
 app.use("/categories/:id/cards", cardRoutes);
 
 if (testing){
   var seed = require("./seed.js");
   // var test = require("./test.js");
-  // seed.extractDataIntoJSON("testAccount", "test.json");
+  // seed.extractDataIntoJSON("testAccount", testFile);
   seed.eraseData("testAccount");
   seed.seed("testAccount", testFile);
   // test.runTests();
+
+  // require("./test.js")();
 }
 
 

@@ -1,4 +1,5 @@
-<% include partials/header %>
+<% include ../partials/header %>
+
 <form class="ui form" action="/categories/<%=category._id%>?_method=PUT" method="post">
   <div class="field" style="font-size:45px;">
     <input type="text" name="category[title]" value="<%=category.title%>" style=" height:200%;">
@@ -72,4 +73,4 @@
 
 
 
-<% include partials/footer %>
+ <% include ../partials/footer %>

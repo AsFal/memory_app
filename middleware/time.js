@@ -45,18 +45,19 @@ function randomizeDeck(deck){
 
 
 //The category here follows the same model found in model/category.js
-function addCardsToDeck(deck, category) {
-  var day  = getDay();
-  // console.log("Day is " + String(day));
-  category.cards.forEach(function(card){
+function generateDeck(cardPile, currentDay) {
+
+  let deck = [];
+  cardPile.forEach(function(card){
     //The timeStamp on the card represents the day on which the card shouldve
     // been seen. If the timeStamp is smaller than the current day, then the day
     // on which it shouldve been added to the deck has passed and the card will
     // thus be added to the current deck
-    if (card.timeStamp <= day) {
+    if (card.timeStamp <= currentDay) {
       deck.push(card);
     }
   });
+  return deck;
 
   //Randomize deck
   // randomizeDeck(deck);
@@ -70,41 +71,80 @@ function addCardsToDeck(deck, category) {
 //Cards will also carry information about the number of consecutive wrong answers
 function reclassifyCard(card, rightAnswer) {
   var currentDay = getDay();
-  var update = {timeStamp:0,
-              consecutiveRightAnswers:0
-            };
 
   if (rightAnswer) {
-    switch(card.consecutiveRightAnswers) {
+    switch(card.numberOfConsecutiveAnswers) {
       case 0:
-        update.timeStamp = currentDay + 3;
+        card.timeStamp = currentDay + 3;
         break;
       case 1:
-        update.timeStamp = currentDay + 7;
+        card.timeStamp = currentDay + 7;
         break;
       case 2:
-        update.timeStamp = currentDay + 14;
+        card.timeStamp = currentDay + 14;
         break;
       case 3:
-        update.timeStamp = currentDay + 30;
+        card.timeStamp = currentDay + 30;
         break;
       default:
-        update.timeStamp = currentDay + 60;
+        card.timeStamp = currentDay + 60;
     }
-    update.consecutiveRightAnswers = card.consecutiveRightAnswers + 1;
+    card.numberOfConsecutiveAnswers++;
   }
   else {
-    update.timeStamp = currentDay + 1;
-    update.consecutiveRightAnswers = 0;
+    card.timeStamp = currentDay + 1;
+    card.consecutiveRightAnswers = 0;
   }
-  return update;
 }
 
 
+var cardPile = [
+  {
+    "question":"Lorem",
+    "answer":"Ipsum",
+    "timeStamp":0,
+    "numberOfConsecutiveAnswers":0
+  },
+  {
+    "question":"Lorem",
+    "answer":"Ipsum",
+    "timeStamp":8,
+    "numberOfConsecutiveAnswers":1
+  },
+  {
+    "question":"Lorem",
+    "answer":"Ipsum",
+    "timeStamp":5,
+    "numberOfConsecutiveAnswers":2
+  },
+  {
+    "question":"Lorem",
+    "answer":"Ipsum",
+    "timeStamp":17,
+    "numberOfConsecutiveAnswers":3
+  },
+  {
+    "question":"Lorem",
+    "answer":"Ipsum",
+    "timeStamp":7,
+    "numberOfConsecutiveAnswers":4
+  },
+  {
+    "question":"Lorem",
+    "answer":"Ipsum",
+    "timeStamp":567,
+    "numberOfConsecutiveAnswers":5
+  }
+];
+
+// let card = cardPile[2];
+// console.log(card);
+// reclassifyCard(card, true);
+// console.log(card);
+
+
 module.exports={
-  addCardsToDeck:addCardsToDeck,
+  generateDeck:generateDeck,
   getDay:getDay,
-  // getDay:getDay,
-  // randomizeDeck:randomizeDeck,
   reclassifyCard:reclassifyCard
 };

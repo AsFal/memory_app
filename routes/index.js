@@ -15,7 +15,7 @@ router.get("/", function(req,res){
 
 /* The login page */
 router.get("/login", function(req,res) {
-  res.render("account_login");
+  res.render("account/login");
 });
 
 
@@ -27,7 +27,7 @@ router.post("/login", passport.authenticate("local", {
 });
 // Account creation page
 router.get("/register", function(req,res){
-  res.render("register");
+  res.render("account/register");
 });
 
 // Returns form that for the create account page
@@ -36,7 +36,7 @@ router.post("/register", function(req,res){
   User.register(new User({username: req.body.username}), req.body.password, function(err, user){
     if(err){
       console.log(err);
-      return res.render("register");
+      return res.render("account/register");
     }
     else {
       // Create the associated client

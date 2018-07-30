@@ -1,0 +1,56 @@
+<% include ../partials/header %>
+
+<!--  Extra links and scripts needed for this specific page-->
+<link rel="stylesheet" href="/css/form.css" type="text/css">
+
+
+<div class="ui grid">
+  <div class="two column row" style="height:16%;">
+    <div class="column left"></div>
+    <div class="column right"></div>
+  </div>
+  <div class="three column centered row" style="height:60%;">
+    <div class="column" id="box">
+      <form class="ui form" action="/categories" method="post">
+        <div class="field">
+          <label for="">Title</label>
+          <input type="text" name="title">
+        </div>
+        <div class="field">
+          <label for="">Description</label>
+          <textarea name="description" rows="8" cols="80"></textarea>
+        </div>
+        <div class="field">
+          <label for="">Image</label>
+          <input type="text" name="image">
+        </div>
+        <div class="field color picker">
+          <table>
+            <tr>
+              <td><label><input type="checkbox" name="red" value="red"></label></td>
+              <td><label><input type="checkbox" name="orange" value="orange"></label></td>
+              <td><label><input type="checkbox" name="yellow" value="yellow"></label></td>
+              <td><label><input type="checkbox" name="blue" value="blue"></label></td>
+            </tr>
+            <tr>
+              <td><label><input type="checkbox" name="green" value="green"></label></td>
+              <td><label><input type="checkbox" name="purple" value="purple"></label></td>
+              <td><label><input type="checkbox" name="gray" value="gray"></label></td>
+              <td><label><input type="checkbox" name="black" value=""></label></td>
+            </tr>
+          </table>
+        </div>
+        <button class="ui button box item" type="submit">Create!</button>
+      </form>
+
+    </div>
+  </div>
+  <div class="two column row" style="height:16%;">
+    <div class="column left"></div>
+    <div class="column right"></div>
+  </div>
+
+</div>
+
+
+ <% include ../partials/footer %>

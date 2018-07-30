@@ -8,7 +8,7 @@ var express = require("express"),
 
 
 // this get request brings the user to the present day's stack of queue cards
-router.get("/", function(req,res){
+router.get("/categories/:id/play", function(req,res){
   Category.findById(req.params.id).populate("cards").exec(function(err, category){
     if(err){
       console.log(err);
@@ -25,42 +25,16 @@ router.get("/", function(req,res){
 
 });
 
-router.post("/", function(req,res){
 
-
-
-  var deck = [];
-  // Check if the deck information is passed in the post request (or a way to do so)
-  Category.findById(req.params.id).populate("cards").exec(function(err,category){
-    if (err) {
-      console.log(err)
-    }
-    else {
-      time.addCardsToDeck(deck, category);
-
-      for (var i = 0; i < deck.length; i++) {
-
-        // boolean variable that indicates if the card was correctly answered
-        // or not
-        var isCorrect = req.body.correct[deck[i]._id] == "off,on";
-        console.log("Answer is Correct: " +  String(isCorrect));
-        console.log(deck[i]);
-        var update = time.reclassifyCard(deck[i], isCorrect);
-        console.log(update);
-        Card.findByIdAndUpdate(deck[i]._id, update, function(err, card){
-          if(err){
-            console.log(err)
-          }
-          else {
-            console.log(card);
-
-          }
-        })
-      }
-    }
-  })
-
-  res.redirect("/categories");
+router.post("/update_card", function(req, res){
+  console.log(req.body);
+  console.log(req.body.cardId);
+  Card.findById(req.body.cardId, function(err, card) {
+    console.log(card);
+    time.reclassifyCard(card, req.body.isCorrect);
+    card.save();
+  });
+  res.send("success");
 })
 
 

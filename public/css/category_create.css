@@ -1,0 +1,28 @@
+.color.picker table {
+  width:100%;
+  height: 15%;
+}
+.color.picker tr {
+  width:100%;
+  height:100%;
+}
+.color.picker td {
+  width:15%;
+  margin-left:5%;
+  margin-right:5%;
+  height:50%;
+  border: 1px solid black;
+}
+
+.color.picker label {
+  width:100%;
+  height:100%
+}
+
+.color.picker label input[type=checkbox] {
+  display:none;
+}
+
+.color.picker label input[type=checkbox]:checked {
+  content:X;
+}

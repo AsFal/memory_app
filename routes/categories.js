@@ -26,23 +26,15 @@ router.get("/",isLoggedIn, function(req,res){
       console.log(err);
     }
     else {
-      res.render("category_index", {category_list:client.categories});
+      res.render("category/index", {category_list:client.categories});
     }
-    // Category.find({}, function(err, category_list) {
-    //   if(err){
-    //     console.log(err);
-    //   }
-    //   else {
-    //     res.render("category_index", {category_list:category_list});
-    //   }
-    // });
   });
 });
 /* This get request shows a form to fill out to create a new category,
  * which after completion will be redirected to the create_card page.
  */
 router.get("/new", function(req,res){
-  res.render("category_create");
+  res.render("category/new");
 });
 
 //Category Creation Post Request
@@ -103,7 +95,7 @@ router.get("/:id", function(req,res){
       console.log(err);
     }
     else {
-        res.render("category_x", {category,category});
+        res.render("category/display", {category,category});
     }
   });
 });
@@ -126,7 +118,7 @@ router.get("/:id/edit", function(req,res){
       console.log(err);
     }
     else {
-      res.render("category_edit", {category, category});
+      res.render("category/edit", {category, category});
     }
   });
 });

@@ -2,3 +2,7 @@
 $ git status
 node_modules/
 seeds/
+tests/
+/test.js
+/.babelrc
+/jest.config.js

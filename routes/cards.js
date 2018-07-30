@@ -9,7 +9,7 @@ var Category = require("../models/category.js"),
 router.get("/new", function(req,res){
   id = req.params.id;
   Category.findById(id, function(err, category){
-      res.render("card_create", {category:category});
+      res.render("card/new", {category:category});
   });
 });
 
@@ -45,7 +45,7 @@ router.get("/:card_id/edit", function(req,res) {
   id=req.params.id;
   Category.findById(id, function(err, category){
     Card.findById(req.params.card_id, function(err, card){
-      res.render("card_edit", {category:category,
+      res.render("card/edit", {category:category,
                               card:card});
     });
   });

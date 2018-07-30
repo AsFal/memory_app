@@ -1,4 +1,6 @@
-<% include partials/header_form %>
+<% include ../partials/header %>
+
+<link rel="stylesheet" href="/css/form.css" type="text/css">
 
 <div class="ui grid">
   <div class="two column row" style="height:16%;">
@@ -7,17 +9,17 @@
   </div>
   <div class="three column centered row" style="height:60%;">
     <div class="column" id="box">
-      <form class="ui form" action="/categories/<%=category._id%>/cards/<%=card._id%>?_method=PUT" method="post">
+      <form class="ui form" action="/categories/<%=category._id%>/cards" method="post">
         <div class="field">
               <label for="">Question</label>
-              <textarea name="card[question]" rows="8" cols="80"><%=card.question%></textarea>
+              <textarea name="card[question]" rows="8" cols="80"></textarea>
         </div>
         <hr>
         <div class="field">
           <label for="">Answer</label>
-          <textarea name="card[answer]" rows="8" cols="80"><%=card.answer%></textarea>
+          <textarea name="card[answer]" rows="8" cols="80"></textarea>
         </div>
-        <button class="ui button box item" type="submit" name="button">Modify!</button>
+        <button class="ui button box item" type="submit" name="button">Create!</button>
       </form>
     </div>
   </div>
@@ -28,4 +30,6 @@
 
 </div>
 
-<% include partials/footer %>
+
+
+ <% include ../partials/footer %>
