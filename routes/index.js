@@ -10,6 +10,8 @@ var express = require("express"),
 
 //This will eventually be a landing page
 router.get("/", function(req,res){
+  console.log(__dirname);
+
   res.redirect("/login");
 });
 
@@ -40,7 +42,7 @@ router.post("/register", function(req,res){
     }
     else {
       // Create the associated client
-      Client.create({
+      Client.csreate({
         user:user._id,
         categories:[]
       });

@@ -9,7 +9,8 @@ var Category = require("../models/category.js"),
 router.get("/new", function(req,res){
   id = req.params.id;
   Category.findById(id, function(err, category){
-      res.render("card/new", {category:category});
+      res.render("card/new", {category:category,
+                              username: req.user.username});
   });
 });
 
@@ -21,6 +22,7 @@ router.post("/", function(req,res){
     if (err){
       console.log(err);
     }
+    
     else {
       var card = req.body.card;
       card.timeStamp = time.getDay();
@@ -46,7 +48,8 @@ router.get("/:card_id/edit", function(req,res) {
   Category.findById(id, function(err, category){
     Card.findById(req.params.card_id, function(err, card){
       res.render("card/edit", {category:category,
-                              card:card});
+                              card:card,
+                              username: req.user.username});
     });
   });
 });

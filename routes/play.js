@@ -19,10 +19,11 @@ router.get("/categories/:id/play", function(req,res){
       //For some reason module does not export the functions called in the sent
       // functions, so I have to find a way to export them as well
 
-      res.render("play", {deck:deck, category: category});
+      res.render("play", {deck:deck,
+                          category: category,
+                          username: req.user.username});
     }
   })
-
 });
 
 

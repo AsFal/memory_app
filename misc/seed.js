@@ -118,31 +118,90 @@ function printObjectToJSON(object, fileName){
  *  The name of the Json file to which the data will be exported.
  *
  */
-function extractDataIntoJSON(username, fileName) {
-  var categories = [];
-  var cards = [];
-  User.findOne({username:username}, function(err, user){
-    Client.findOne({user:user._id}, function(err, client){
-      for (var i = 0; i < client.categories.length; i++) {
-        Category.findById(client.categories[i], function(err, category){
-          categories.push(category);
-          for (var j = 0; j < category.cards.length; j++) {
-            Card.findById(category.cards[j], function(err, card){
-              cards.push(card);
-              // Here we wait for all of the cards in all of the categories to
-              // have been fetched before creating the JSON file
-              if (categories.length === client.categories.length
-                && cards.length === categories[categories.length-1].cards.length) {
-                  // var object = generateObject(categories,cards);
-                  var object = {categories:pinchList([categories, cards], ["cards"])};
-                  printObjectToJSON(object, fileName);
-              }
-            });
-          }
-        });
+
+
+function fetchCard (cardId) {
+  return new Promise(function(fulfill,reject) {
+    Card.findById(cardId, (err, card) => {
+      if(err) {
+        console.log(err)
+      }
+      else {
+        card = documentToFormattedObject(card);
+        fulfill(card);
       }
     });
   });
+}
+
+function fetchCategory(categoryId) {
+  return new Promise(function(fulfill, reject) {
+    Category.findById(categoryId, (err, category) => {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        category = documentToFormattedObject(category);
+
+        cardPromises = [];
+        category.cards.forEach(cardId=> {
+          cardPromises.push(fetchCard(cardId));
+        })
+
+        Promise.all(cardPromises)
+        .then(
+          cards=> {
+
+          category.cards = cards;
+          fulfill(category);
+          },
+          err => {
+            console.log(err);
+          });
+      }
+    });
+  });
+}
+
+// var object = {categories:pinchList([categories, cards], ["cards"])};
+// let printPromise =  printObjectToJSON(object, fileName);
+// printPromise.then((data)=> {
+//   fulfill('Data has been extracted to JSON');
+// },
+// (err)=> {
+//   console.log(err);
+// })
+
+function extractDataIntoJSON(username, fileName) {
+  return new Promise(function(fulfill, reject) {
+    let clientPromise = fetchClient();
+    clientPromise.then(
+      client => {
+        categoryPromises = []
+        client.categories.forEach(categoryId => {
+          categoryPromises.push(fetchCategory(categoryId))
+        });
+        Promise.all(categoryPromises)
+        .then(
+          categories => {
+            var object = {categories};
+            let printPromise = printObjectToJSON(object, fileName);
+            printPromise.then( () => {
+              fulfill('Data has been exdtracted to JSON');
+            },
+            err => {
+              console.log(err);
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        )
+      },
+      err => {
+        console.log(err);
+      });
+    }
 }
 // NOTE:
 // https://stackoverflow.com/questions/36856232/write-add-data-in-json-file-using-node-js
@@ -151,6 +210,30 @@ function extractDataIntoJSON(username, fileName) {
 // I could create two function, one to fetch the Categories and one for the cards, but the problem here lies that
 // i need to return these objects out of the function to be able to access them and I only have access to these objects in the call back
 // I could make the make object async, but it would then be racing with all the mongoose callbacks
+
+
+function deleteAllCategories(categoryIds) {
+  return new Promise(function(fulfill, reject) {
+    let lastId = categoryIds[categoryIds.length -1];
+    let cardIds = [];
+    categoryIds.forEach(categoryId => {
+      Category.findByIdAndDelete(categoryId, (err, category) => {
+        cardIds = cardIds.concat(category.cards);
+        if (category._id.toString() === lastId.toString()) {
+          fulfill(cardsIds)
+        }
+      })
+    })
+  })
+}
+
+function deleteAllCards(cardIds) {
+  cardIds.forEach(cardId => {
+    Card.findByIdAndDelete(cardId);
+  });
+}
+
+
 
 /**
  * This function makes a number of async queries to MongoDB to generate lists
@@ -162,28 +245,59 @@ function extractDataIntoJSON(username, fileName) {
  *
  */
 function eraseData(username){
-  console.log(username+"'s data will be erased.");
 
-  User.findOne({username:username}, function(err, user){
-    Client.findOne({user:user._id}, function(err, client){
-      client.categories.forEach(function(categoryId){
-        Category.findByIdAndDelete(categoryId, function(err, category){
-          category.cards.forEach(function(cardId){
-            Card.findByIdAndDelete(cardId, function(err, card){
-              if (err) {
-                console.log(err);
-              }
+  console.log(username+"'s data will be erased.");
+  return new Promise(function(fulfill, reject) {
+    let clientPromise = fetchClient();
+    clientPromise.then(client => {
+      deleteAllCategories(client.categories)
+      .then(function(cardIds){
+        deleteAllCards(cardIds)
+      },
+      function(err) {
+        console.log(err);
+      })
+      .then(
+        client.categories = [];
+        client.save()
+        .then(() => {
+          fulfill();
+        })
+      ))
+      })
+    },
+    err => {
+
+    });
+
+
+    User.findOne({username:username}, function(err, user){
+      Client.findOne({user:user._id}, function(err, client){
+        let lastCategoryId = client.categories[client.categories.length - 1];
+        client.categories.forEach(function(categoryId){
+          Category.findByIdAndDelete(categoryId, function(err, category){
+            let lastCardId = category.cards[category.cards.length-1];
+            category.cards.forEach(function(cardId){
+              Card.findByIdAndDelete(cardId, function(err, card){
+                if (err) {
+                  console.log(err);
+                }
+                else if(category._id.toString() === lastCategoryId.toString()
+                        && card._id.toString() === lastCardId.toString()) {
+                    fulfill('Accounts data has been deleted');
+                }
+              });
             });
           });
         });
       });
     });
-  });
-  User.findOne({username:username}, function(err, user){
-    Client.findOneAndUpdate({user:user._id},
-      {
-        categories:[]
-      }, function(err, client){
+    User.findOne({username:username}, function(err, user){
+      Client.findOneAndUpdate({user:user._id},
+        {
+          categories:[]
+        }, function(err, client){
+      });
     });
   });
 }
@@ -200,23 +314,18 @@ function eraseData(username){
  *  The name of the JSON file from which we will extract the data to seed the
  *  the DB.
  */
-function seed(username, fileName){
+function seedData(username, fileName){
 
   console.log(username+" will be seeded with data.")
-  var categoryList = [];
-  var cardList = [];
-
-  // require parse the json for us
+  var categories = [];
+  var cards = [];
   var seed = require("./seeds/" + fileName);
-  // console.log(jsonSeed);
-  // var seed = JSON.parse(jsonSeed);
 
-
-
-  User.findOne({username:username}, function(err, user){
-    Client.findOne({user:user._id}, function(err, client){
+  return new Promise (function(fulfill, reject) {
+    let clientPromise = fetchClient();
+    clientPromise.then(client => {
       for (var i = 0; i < seed.categories.length; i++) {
-        categoryList.push(new Category({
+        categories.push(new Category({
           title:seed.categories[i].title,
           description: seed.categories[i].description,
           image:seed.categories[i].image,
@@ -234,23 +343,56 @@ function seed(username, fileName){
             consecutiveRightAnswers:seed.categories[i].cards[j].consecutiveRightAnswers
           })
           categoryList[i].cards.push(card._id);
-          cardList.push(card);
-          // card.save();
+          cards.push(card);
         }
+
+        let saveAllPromise = Promise.all(
+          saveAll(categories);
+          saveAll(cards);
+          saveClient(client);
+        );
+        saveAllPromise.then(()=> {
+            fulfill('db has been seeded');
+          },
+          err => {
+            console.log(err);
+          }
+        );
       }
-      // In the single callback for clients, once all of the sync blocks are
-      // finsihed we can call the async functions
-      categoryList.forEach(function(category){
-        category.save();
+    })
+  });
+  });
+
+}
+
+function fetchClient(username) {
+  return new Promise(function(fulfill, reject) {
+    User.findOne({username:username}, function(err, user){
+      Client.findOne({user:user._id}, function(err, client){
+        fulfill(client);
       });
-      cardList.forEach(function(card){
-        card.save();
-      });
-      client.save();
     });
   });
 }
 
-module.exports = {seed:seed,
+function saveAll(iterable) {
+  return new Promise(function(fulfill, reject) {
+    let lastItem = iterable[iterable.length - 1];
+    iterable.forEach(function(item) {
+      item.save(function(err) {
+        if(err) {
+          console.log(err);
+        }
+        else if(item === lastItem ) {
+          fulfill();
+        }
+      });
+    });
+  });
+}
+
+
+
+module.exports = {seedData:seedData,
                   extractDataIntoJSON:extractDataIntoJSON,
                   eraseData:eraseData};

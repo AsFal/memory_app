@@ -5,6 +5,7 @@ var express   = require("express"),
     Client    = require("../models/client.js"),
     Card     = require("../models/card.js");
 
+// var midImage = require("../middleware/image_check.js");
 
 
 //Almost sure this is going to need some kind of require statement
@@ -18,23 +19,25 @@ function isLoggedIn(req,res, next){
  * categories, formatted in a way that we see the title, an image (chosen by the
  * user or the default image) and  the number of queue cards in the category
  */
-router.get("/",isLoggedIn, function(req,res){
-
+router.get("/", isLoggedIn, function(req,res){
 
   Client.findOne({user:req.user._id}).populate("categories").exec(function(err, client){
     if (err){
       console.log(err);
     }
     else {
-      res.render("category/index", {category_list:client.categories});
+      res.render("category/index", {category_list:client.categories,
+                                    username: req.user.username});
     }
   });
 });
+
+
 /* This get request shows a form to fill out to create a new category,
  * which after completion will be redirected to the create_card page.
  */
 router.get("/new", function(req,res){
-  res.render("category/new");
+  res.render("category/new", {username: req.user.username});
 });
 
 //Category Creation Post Request
@@ -42,45 +45,51 @@ router.post("/", function(req,res) {
   var title = req.body.title;
   var description = req.body.description;
   var image = req.body.image;
+  // console.log("start" + image)
+  // imageTestPromise = midImage.fillImage(image);
 
-
-  if (!image){
-    image = "/images/brain.jpg";
-    // Need to find default image
-  }
-  //If I can alter the create function, then I could put this as part of the create
-  Client.findOne({user:req.user.id}, function(err, client){
-    if(err){
-      console.log(err);
-    }
-    else{
-      Category.create( {title:title,
-                        description:description,
-                        image:image,
-                        nb_cards:0,
-                        cards:[]},
-                      function(err, category){
-                        if(err)
-                        {
-                          console.log(err);
-                        }
-                        else {
+  // console.log("Start" + image)
+  // imageTestPromise.then( (image)=> {
+  //   console.log("then"+image)
+    Client.findOne({user:req.user.id}, function(err, client){
+      if(err){
+        console.log(err);
+      }
+      else{
+        Category.create( {title:title,
+                          description:description,
+                          image:image,
+                          nb_cards:0,
+                          cards:[]},
+                        function(err, category){
+                          if(err)
                           {
-                            client.categories.push(category._id);
-                            client.save(function(err){
-                              if(err){
-                                console.log(err);
-                              }
-                            });
-                            console.log("Category created");
+                            console.log(err);
                           }
-                        }
-                      });
-      res.redirect("categories");
-    }
+                          else {
+                            {
+                              client.categories.push(category._id);
+                              client.save(function(err){
+                                if(err){
+                                  console.log(err);
+                                }
+                              });
+                              console.log("Category created");
+                            }
+                          }
+                        });
+        res.redirect("categories");
+      }
+    });
   });
 
-});
+//   },
+//   err=> {
+//     console.log(err);
+//   })
+//   //If I can alter the create function, then I could put this as part of the create
+// });
+
 
 /* This get request renders the category page for category "x". This page
  * should have a start button which
@@ -90,12 +99,25 @@ router.get("/:id", function(req,res){
   //get the id to pass as a paramter
   var id = req.params.id;
 
+
   Category.findById(id, function(err, category){
     if (err){
+      console.log(__dirname);
+      console.log("==============================");
+      console.log("err");
+      console.log("==============================");
+
       console.log(err);
+      res.send("error");
     }
     else {
-        res.render("category/display", {category,category});
+      console.log(__dirname);
+
+      console.log("==============================");
+      console.log("render page");
+      console.log("==============================");
+        res.render("category/display", {category,category,
+                                username: req.user.username});
     }
   });
 });
@@ -118,7 +140,8 @@ router.get("/:id/edit", function(req,res){
       console.log(err);
     }
     else {
-      res.render("category/edit", {category, category});
+      res.render("category/edit", {category, category,
+                              username: req.user.username});
     }
   });
 });
@@ -153,7 +176,6 @@ router.put("/:id", function(req,res){
 router.delete("/:id", function(req,res){
 
   // TODO: This method needs to delete all of the associated cards
-
   Client.findOne({user:req.user._id}, function(err, client){
 
     // This is almost the same bit of case as found in the card delete route.
@@ -166,7 +188,6 @@ router.delete("/:id", function(req,res){
       }
     }
     client.save();
-
 
     Category.findByIdAndDelete(req.params.id, function(err, category){
         if (err)
@@ -191,9 +212,9 @@ router.delete("/:id", function(req,res){
     // (we should be waiting)
     res.redirect("/categories");
   });
-
-
 });
+
+
 
 
 

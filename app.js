@@ -50,17 +50,19 @@ app.use("/", playRoutes);
 app.use("/categories/:id/cards", cardRoutes);
 
 if (testing){
-  var seed = require("./seed.js");
+
+  var seed = require("./misc/seed.js");
   // var test = require("./test.js");
   // seed.extractDataIntoJSON("testAccount", testFile);
   seed.eraseData("testAccount");
-  seed.seed("testAccount", testFile);
+  // seed.seed("testAccount", testFile);
   // test.runTests();
-
   // require("./test.js")();
+
 }
 
 
-app.listen(3000, function(){
-  console.log("The server is a lie!");
+app.listen(5786, function(){
+  console.log("The server is a lie! \n" +
+              "But if it wasn't, it'd be found on port 5786");
 });
