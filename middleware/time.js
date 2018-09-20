@@ -46,7 +46,8 @@ function randomizeDeck(deck){
 
 //The category here follows the same model found in model/category.js
 function generateDeck(cardPile, currentDay) {
-
+  console.log("Arrived")
+  console.log(cardPile);
   let deck = [];
   cardPile.forEach(function(card){
     //The timeStamp on the card represents the day on which the card shouldve

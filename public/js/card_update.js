@@ -32,22 +32,22 @@ $(function() {
 * @event jquery#click
 */
 
-  $(".container").on("click", ".flip", function(){
+$(".container").on("click", ".flip", function(){
 
-    /**
-    * The first condition (left of the &&) checks if the front of the
-    * clicked card is at the front of the z-axis. This makes sure the card
-    * only flips if it is question side up. The answer side transition is
-    * handled by the input click event (next one).
-    *
-    * The second condition (right of the &&) checks if there is the presence
-    * of a submit button on the card (which would mean that the card is the
-    * last one and should not be flipped).
-    */
-    if ( $(this).find(".front").css("z-index") == "1" && $(this).find("button").length == 0){
-      $(this).flip(true);
-    }
-  });
+  /**
+  * The first condition (left of the &&) checks if the front of the
+  * clicked card is at the front of the z-axis. This makes sure the card
+  * only flips if it is question side up. The answer side transition is
+  * handled by the input click event (next one).
+  *
+  * The second condition (right of the &&) checks if there is the presence
+  * of a submit button on the card (which would mean that the card is the
+  * last one and should not be flipped).
+  */
+  if ( $(this).find(".front").css("z-index") == "1" && $(this).find(".ui.button").length == 0){
+    $(this).flip(true);
+  }
+});
 
 /**
 * Event that triggers when one of the two checkboxes are clicked on the answer

@@ -1,4 +1,4 @@
-<% include ../partials/user_header %>
+<% include partials/user_header %>
 
 
 <link rel="stylesheet" href="/css/cards.css">
@@ -32,19 +32,14 @@
             for front end card cycling. -->
             <label><input type="checkbox" name="<%=card._id%>" value="incorrect">Incorrect</label>
 
-
-
           </div>
         </div>
       <%});%>
         <div class="flip">
           <div class="front">
-            <a class="ui buton" href="/categories">Finish for Today</a>
-            <!-- <button class="ui buton" id="finish" type="submit" name="button">Finish for Today</button> -->
+            <a class="ui button" href="/categories">Finish for Today</a>
           </div>
-          <!-- <div class="back">
 
-          </div> -->
         </div>
       </div>
     </form>

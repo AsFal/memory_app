@@ -51,6 +51,14 @@ body {
 }
 /* ====================================== */
 
+#form-container {
+  width:400px;
+  height: 100%;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding:10px;
+  margin: 0px auto;
+}
 
 
 .box.item {
@@ -59,10 +67,9 @@ body {
   width: 50%;
   margin: 2% auto;
   text-align: center;
-
 }
 
-.ui .form .field {
+.ui.form .field {
   width:80%;
   margin-left: 10%;
   margin-right:10%;

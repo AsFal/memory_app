@@ -201,7 +201,7 @@ function extractDataIntoJSON(username, fileName) {
       err => {
         console.log(err);
       });
-    }
+    });
 }
 // NOTE:
 // https://stackoverflow.com/questions/36856232/write-add-data-in-json-file-using-node-js
@@ -263,12 +263,13 @@ function eraseData(username){
         .then(() => {
           fulfill();
         })
-      ))
+      )
       })
     },
     err => {
 
-    });
+    }
+  );
 
 
     User.findOne({username:username}, function(err, user){

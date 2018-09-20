@@ -6,3 +6,4 @@ tests/
 /test.js
 /.babelrc
 /jest.config.js
+out/

@@ -22,7 +22,7 @@ router.post("/", function(req,res){
     if (err){
       console.log(err);
     }
-    
+
     else {
       var card = req.body.card;
       card.timeStamp = time.getDay();

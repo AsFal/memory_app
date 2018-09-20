@@ -14,8 +14,9 @@ router.get("/categories/:id/play", function(req,res){
       console.log(err);
     }
     else {
+      console.log(category.cards);
       var deck = [];
-      time.addCardsToDeck(deck, category);
+      deck = time.generateDeck(category.cards, time.getDay());
       //For some reason module does not export the functions called in the sent
       // functions, so I have to find a way to export them as well
 
